@@ -1,1 +1,28 @@
 
+<% @products.each do |product| %>
+<%=  render partial: "product", locals: {product: product} %>
+<% end %>
+
+
+
+<center><%= button_to "Add a Product", '/products/new', :class => "waves-effect waves-red btn-flat", method:"get" %>
+
+
+  <script type="text/javascript" charset="utf-8">
+  $(function () {
+    $(".js-more").on('click', function() {
+      var id = $(this).data("id");
+      $.get("/products/" + id + "/description", function(data) {
+        $("#product-" + id).text(data);
+        $.get("/products/" + id + "/inventory", function(data) {
+          if (data === 'true') {
+            data =  "Available"
+          } else if (data === 'false'){
+            data =  "Sold Out"
+          }
+          $("#product-" + id).append("<br>" + data);
+      });
+    });
+   });
+  });
+  </script>
